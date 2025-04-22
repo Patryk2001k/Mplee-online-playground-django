@@ -1,1 +1,1 @@
-# Mplee-online-playground-django
+# django-mplee
