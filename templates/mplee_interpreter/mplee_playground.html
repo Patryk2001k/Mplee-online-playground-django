@@ -1,14 +1,67 @@
-{%  extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
-  
-{% block css %}
+{% block head %}
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.css">
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/hopscotch.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
 
-<link rel="stylesheet" href="{% static "css/mplee_playground.css" %}">
+<style>
+    @keyframes waitingAnimation {
+        0%   { background-color: #28a745; }
+        50%  { background-color: #ff5733; }
+        100% { background-color: red; }
+    }
 
+    .waiting {
+        animation: waitingAnimation 1s ease-in-out forwards;
+        pointer-events: none;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif; 
+        overflow: hidden;
+    }
+
+    .CodeMirror {
+        @apply w-full h-[300px] lg:h-[400px] border-2 border-gray-600 rounded-lg text-base;
+        font-family: 'Fira Code', monospace !important;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
+{% csrf_token %}
+<div class="min-h-screen bg-gradient-to-b from-[#d0e3ff] to-[#a1c4ff] px-4 py-8">
+    <div class="max-w-5xl mx-auto flex flex-col items-center space-y-6 text-center">
+        <p class="text-4xl md:text-6xl font-bold">Mplee interpreter playground</p>
+        <p class="text-lg md:text-2xl text-gray-500">Hi, I created a simple programming language that you can test here. Just write a simple program in the textarea and hit run.</p>
+    </div>
 
-    Mplee interpreter block test
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 mt-12 w-full">
+        <div class="flex-1 h-[300px] lg:h-[400px] lg:w-1/2 w-full">
+            <textarea id="codeEditor"></textarea>
+        </div>
 
+        <!-- Pole output -->
+        <textarea id="outputField" class="w-full lg:w-1/2 h-[300px] lg:h-[400px] p-4 border-2 border-gray-600 rounded-lg resize-none bg-white outline-none text-base" readonly>
+Here is output
+=============
+Program run in x seconds
+        </textarea>
+    </div>
+
+    <div class="flex justify-center mt-10">
+        <button id="runButton" class="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-300" onclick="sendMpleeCode()">Run</button>
+    </div>
+</div>
+
+<script src="{% static 'javascript/mplee_playground.js' %}"></script>
 {% endblock %}
